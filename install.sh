@@ -4,7 +4,6 @@
 #   ./install.sh            # symlink 모드(기본): repo 파일을 ~/.claude 로 링크
 #                           #   -> 이후 양쪽 머신에서 git pull/push 만으로 동기화
 #   ./install.sh --copy     # 복사 모드: 링크 없이 파일을 복사 (repo 지워도 동작)
-#   ./install.sh --legacy   # caveman standalone hook 도 같이 설치 (README "중복" 참고)
 #
 # 멱등. 기존 파일은 ~/.claude/_migrate-backup-<ts>/ 로 백업 후 교체.
 set -euo pipefail
@@ -12,12 +11,10 @@ set -euo pipefail
 REPO="$(cd "$(dirname "$0")" && pwd)"
 DEST="$HOME/.claude"
 MODE=link
-LEGACY=0
 for a in "$@"; do
   case "$a" in
     --copy) MODE=copy ;;
     --link) MODE=link ;;
-    --legacy) LEGACY=1 ;;
     *) echo "unknown option: $a"; exit 2 ;;
   esac
 done
@@ -62,10 +59,6 @@ for s in dev-start dev-end proofread review-paper; do place "skills/$s" "skills/
 for a in proofreader r-reviewer; do place "agents/$a.md" "agents/$a.md"; done
 say "$MODE 모드로 배치 완료 (개인 파일 12개)"
 
-if [ "$LEGACY" = 1 ]; then
-  for f in "$REPO"/legacy/caveman-standalone/*; do place "legacy/caveman-standalone/$(basename "$f")" "hooks/$(basename "$f")"; done
-  warn "legacy 모드: standalone caveman hook 설치됨. settings.json 에 해당 hook 등록은 직접 추가해야 한다 (README 참고)."
-fi
 
 [ -d "$BK" ] && say "백업: $BK"
 

@@ -19,7 +19,7 @@ description: >
 
 ```bash
 # Claude Code는 경로의 / . _ 공백을 전부 -로 바꿔 디렉토리 이름을 만든다.
-# / 만 바꾸면 Note_Obsidian 같은 경로에서 엉뚱한 빈 디렉토리를 가리킨다.
+# / 만 바꾸면 my_notes 처럼 _ 가 든 경로에서 엉뚱한 빈 디렉토리를 가리킨다.
 # 한글은 현재 버전이 보존한다 (구버전은 글자마다 -로 뭉갰다 — 옛 디렉토리가 남아 있을 수 있다).
 DIR="$HOME/.claude/projects/$(pwd | sed 's#[/._ ]#-#g')/memory"
 ls "$DIR" 2>/dev/null
