@@ -1,0 +1,35 @@
+# 이 repo에는 "내가 만든 설정 파일"만 들어간다.
+# 아래는 실수로라도 커밋되면 안 되는 것들 — 전부 ~/.claude 안에 있고
+# 이 repo로 복사할 이유가 없다. 방어용으로 명시해 둔다.
+
+# 인증
+.credentials.json
+*credentials*
+*.token
+.env
+.env.*
+
+# 대화 기록 / 세션 상태 (내용에 코드·키·개인정보가 섞임)
+history.jsonl
+projects/
+sessions/
+tasks/
+teams/
+file-history/
+shell-snapshots/
+paste-cache/
+session-env/
+telemetry/
+daemon*
+*.log
+stats-cache.json
+backups/
+_migrate-backup-*/
+
+# 재설치되는 것 (마켓플레이스가 알아서 받아옴)
+plugins/cache/
+plugins/marketplaces/
+
+# 머신 로컬 상태
+.claude.json
+.DS_Store

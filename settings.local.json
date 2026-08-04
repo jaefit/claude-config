@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/usr/bin/python3 *notify.py*)",
+      "Bash(/usr/bin/python3 -c ' *)"
+    ]
+  }
+}
