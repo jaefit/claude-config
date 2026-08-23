@@ -13,7 +13,7 @@
 
 ---
 
-새 노트북에서 Claude Code 를 깔고 **첫 세션에 아래 한 줄만 붙여넣으면 된다.**
+## 1단계 — 붙여넣을 한 줄
 
 ```
 https://raw.githubusercontent.com/jaefit/claude-config/main/SETUP.md 를 읽고 그대로 실행해줘. 나는 Windows / 관리자 권한 있음. 막히면 물어봐.
