@@ -35,7 +35,7 @@ cd ~/claude-config && ./install.sh          # Windows 권한 없으면 --copy
 | `statusline-command.sh` | `sh` + `jq` 필요. Windows 는 Git Bash + `winget install jqlang.jq` |
 | `install.sh` | 3-OS 겸용. Windows 에서 심링크가 조용히 복사본이 되는 걸 검사해서 경고한다 |
 | `swift-lsp` 플러그인 | Windows 에선 무의미하나 무해. `settings.json` 은 맥과 공유하므로 그대로 둔다 |
-| `caveman-shrink` MCP | `npx` 실행이 `CONNECTION_CLOSED` 로 실패 중 → `install.sh` 기본에서 제외. `--with-mcp` 로 시도 가능 |
+| `caveman-shrink` MCP | **등록하지 않는다.** 독립 서버가 아니라 stdio 프록시(다른 MCP 서버를 감싸 description 을 압축)인데 upstream 인자 없이 등록돼 있었다. 게다가 stdio 전용이라 claude.ai HTTP 커넥터는 못 감싼다. 2026-08-23 제거 |
 
 **검증 원칙 — "설정 파일을 썼다"는 동작 증명이 아니다.**
 훅은 세션을 새로 시작해야 로드된다. status line 은 JSON 을 stdin 으로 물려 직접 실행해 보고,

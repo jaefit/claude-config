@@ -133,8 +133,11 @@ claude
   다르면 `hooks/dev-start-hint.js` 의 `slugify()` 와 두 SKILL.md 의 `sed` 를 실제에 맞춰 고쳐라.**
   고쳤으면 commit + push 해서 다음 머신이 덕을 보게 할 것.
 - 24-bit 트루컬러 status line 은 Windows Terminal 에서만 제대로 나온다. 구형 `conhost` 는 깨진다.
-- `caveman-shrink` MCP 는 2026-08 기준 `npx` 실행이 `CONNECTION_CLOSED` 로 실패한다.
-  그래서 `install.sh` 기본에서 뺐다. 되살릴 거면 `./install.sh --with-mcp`.
+- `caveman-shrink` 는 MCP 서버가 아니라 **stdio 프록시**다. 다른 MCP 서버를 자식 프로세스로
+  띄워 `tools/list` 의 description 을 압축한다. 올바른 형식은
+  `npx caveman-shrink <upstream-command> [...args]` — upstream 없이 등록하면 exit 2 로
+  `CONNECTION_CLOSED` 가 난다. stdio 전용이라 claude.ai HTTP 커넥터는 감쌀 수 없다.
+  stdio MCP 서버를 쓰게 되면 그때 감싸라.
 
 ### 7. 이 설정의 성격 — 사용자에게 반드시 알릴 것
 

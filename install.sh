@@ -4,7 +4,6 @@
 #   ./install.sh            # symlink 모드(기본): repo 파일을 ~/.claude 로 링크
 #                           #   -> 이후 양쪽 머신에서 git pull/push 만으로 동기화
 #   ./install.sh --copy     # 복사 모드: 링크 없이 파일을 복사 (repo 지워도 동작)
-#   ./install.sh --with-mcp # caveman-shrink MCP 도 등록 (기본 제외 — 아래 주석 참고)
 #
 # 멱등. 기존 파일은 ~/.claude/_migrate-backup-<ts>/ 로 백업 후 교체.
 # 철수는 ./uninstall.sh 참고.
@@ -15,12 +14,10 @@ set -euo pipefail
 REPO="$(cd "$(dirname "$0")" && pwd)"
 DEST="$HOME/.claude"
 MODE=link
-WITH_MCP=0
 for a in "$@"; do
   case "$a" in
     --copy) MODE=copy ;;
     --link) MODE=link ;;
-    --with-mcp) WITH_MCP=1 ;;
     *) echo "unknown option: $a"; exit 2 ;;
   esac
 done
@@ -102,17 +99,14 @@ fi
 # 플러그인은 settings.json 의 extraKnownMarketplaces/enabledPlugins 를 보고
 # 첫 실행 때 GitHub 에서 자동 설치된다. 여기서 할 일 없음.
 #
-# caveman-shrink MCP 는 기본으로 등록하지 않는다 — 2026-08 기준 npx 실행이
-# CONNECTION_CLOSED 로 실패한다. 되살아나면 --with-mcp 로 등록.
-if [ "$WITH_MCP" = 1 ]; then
-  if claude mcp list 2>/dev/null | grep -q caveman-shrink; then
-    say "mcp caveman-shrink 이미 등록됨"
-  else
-    claude mcp add --scope user caveman-shrink -- npx -y caveman-shrink \
-      && say "mcp caveman-shrink 등록 (user scope)" \
-      || warn "실패 — 수동: claude mcp add --scope user caveman-shrink -- npx -y caveman-shrink"
-  fi
-fi
+# caveman-shrink 는 등록하지 않는다. 독립 MCP 서버가 아니라 stdio 프록시다 —
+# 다른 MCP 서버를 자식 프로세스로 spawn 해서 tools/list 의 description 을 압축한다.
+#   올바른 형식: npx caveman-shrink <upstream-command> [...args]
+#   잘못된 형식: npx -y caveman-shrink          <- upstream 없어서 exit 2, CONNECTION_CLOSED
+# 게다가 stdio 전용이라 claude.ai HTTP 커넥터(Todoist·Gmail·Drive 등)는 감싸지 못한다.
+# stdio MCP 서버를 쓰게 되면 그때 감싸라. 예:
+#   claude mcp add --scope user fs-shrunk -- \
+#     npx caveman-shrink npx @modelcontextprotocol/server-filesystem /path
 
 # ---------- 5. 검증 ----------
 jq -e . "$DEST/settings.json" >/dev/null && say "settings.json JSON 유효"
