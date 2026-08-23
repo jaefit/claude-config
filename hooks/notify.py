@@ -106,6 +106,7 @@ elif IS_WIN:
     # 배너 — NotifyIcon 풍선. BurntToast 같은 추가 모듈 없이 기본 PowerShell로 동작한다.
     ps = (
         "Add-Type -AssemblyName System.Windows.Forms;"
+        "Add-Type -AssemblyName System.Drawing;"
         "$n=New-Object System.Windows.Forms.NotifyIcon;"
         "$n.Icon=[System.Drawing.SystemIcons]::Information;"
         "$n.Visible=$true;"

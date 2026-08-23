@@ -87,7 +87,7 @@ place hooks/notify.sh          hooks/notify.sh
 place hooks/dev-start-hint.js  hooks/dev-start-hint.js
 for s in dev-start dev-end proofread review-paper; do place "skills/$s" "skills/$s"; done
 for a in proofreader r-reviewer; do place "agents/$a.md" "agents/$a.md"; done
-say "$MODE 모드로 배치 완료 (개인 파일 13개)"
+say "$MODE 모드로 배치 완료 (개인 파일 12개)"
 
 if [ "$LINK_FAILED" = 1 ]; then
   warn "심링크가 아니라 복사본이 만들어졌다 (Windows 권한 문제)."

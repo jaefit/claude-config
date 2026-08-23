@@ -61,7 +61,7 @@ slug 은 추측하지 말고 `~/.claude/projects/` 에 실제로 생긴 디렉�
 플러그인 캐시(`~/.claude/plugins/cache`)나 caveman 소스를 커밋할 이유가 없다 — 버전 고정이
 필요하면 `enabledPlugins` 대신 마켓플레이스 커밋 SHA 를 적어두는 쪽이 낫다.
 
-## 담긴 것 (개인물 13개)
+## 담긴 것
 
 ```
 settings.json           전역 설정 — 경로는 전부 $HOME (아래 참고)

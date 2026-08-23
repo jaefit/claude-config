@@ -1,5 +1,18 @@
 # SETUP — 새 머신에 이 설정 올리기 (에이전트용 지시서)
 
+## 0단계 — Claude Code 부터 깔기 (사람이 직접)
+
+이 지시서는 Claude Code 안에서 읽히는 걸 전제한다. 아직 없으면 먼저 설치한다.
+
+| OS | 명령 |
+|---|---|
+| Windows (PowerShell) | `irm https://claude.ai/install.ps1 \| iex` |
+| macOS / Linux | `curl -fsSL https://claude.ai/install.sh \| bash` |
+
+설치 후 **새 터미널**을 열고 `claude` 실행. 그 세션에 아래 한 줄을 붙여넣는다.
+
+---
+
 새 노트북에서 Claude Code 를 깔고 **첫 세션에 아래 한 줄만 붙여넣으면 된다.**
 
 ```
