@@ -7,13 +7,14 @@
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "/usr/bin/python3 \"$HOME/.claude/hooks/notify.py\""
+            "command": "sh \"$HOME/.claude/hooks/notify.sh\""
           }
         ]
       }
@@ -38,7 +39,9 @@
   "enabledPlugins": {
     "caveman@caveman": true,
     "frontend-design@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true
+    "swift-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -58,6 +61,5 @@
   "advisorModel": "fable",
   "skipDangerousModePermissionPrompt": true,
   "agentPushNotifEnabled": false,
-  "skipAutoPermissionPrompt": true,
-  "model": "opus[1m]"
+  "skipAutoPermissionPrompt": true
 }

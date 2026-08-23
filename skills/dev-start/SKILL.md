@@ -18,15 +18,19 @@ description: >
 **시스템 프롬프트에 memory 디렉토리 경로가 이미 주어져 있으면 그걸 쓴다.** 아래 계산은 없을 때의 폴백이다.
 
 ```bash
-# Claude Code는 경로의 / . _ 공백을 전부 -로 바꿔 디렉토리 이름을 만든다.
+# Claude Code는 경로의 구분자(/ 또는 \)와 : . _ 공백을 전부 -로 바꿔 디렉토리 이름을 만든다.
 # / 만 바꾸면 my_notes 처럼 _ 가 든 경로에서 엉뚱한 빈 디렉토리를 가리킨다.
 # 한글은 현재 버전이 보존한다 (구버전은 글자마다 -로 뭉갰다 — 옛 디렉토리가 남아 있을 수 있다).
-DIR="$HOME/.claude/projects/$(pwd | sed 's#[/._ ]#-#g')/memory"
+DIR="$HOME/.claude/projects/$(pwd | sed 's#[/\\:._ ]#-#g')/memory"
 ls "$DIR" 2>/dev/null
 ```
 
 `mkdir` 는 여기서 하지 않는다. 경로가 틀린 채로 만들면 빈 디렉토리가 생기고
 아래 모드 판별이 FIRST-RUN으로 잘못 빠진다.
+
+**Windows 주의.** Git Bash 의 `pwd` 는 `/c/Users/...` 를 주지만 Claude Code 는
+`C--Users-...` 처럼 드라이브 문자 기준으로 이름을 만든다. 위 계산이 빗나가므로
+Windows 에서는 아래 폴백 스캔이 사실상 기본 경로다.
 
 ### `$DIR`이 없으면 — 고아 메모리부터 찾는다
 

@@ -1,52 +1,52 @@
 # claude-config
 
 개인 Claude Code 전역 설정. **공개물은 선언으로, 개인물만 파일로** 담는다.
-**macOS 에서 만들어 macOS 에서 돌고 있다.** 윈도우/리눅스로 옮기려면 아래 [이식 노트](#다른-os-로-옮길-때) 참고.
+**macOS 에서 만들어졌고 Windows(Git Bash)·Linux 도 지원한다.** 플랫폼 의존 코드는 런타임에 분기한다.
 
 ---
 
-## 다른 OS 에서 이 repo 를 읽는 에이전트에게
+## 새 머신에 올리기 — 에이전트에게 시킬 것
 
-목표는 **파일 복사가 아니라 동등 기능 재구성**이다. `install.sh` 는 macOS 전용이므로 실행하지 말 것.
-순서대로:
+새 머신의 Claude Code 첫 세션에 이 한 줄:
 
-**1. OS 무관 — 값만 옮기면 됨 (내용 수정 불필요)**
-- `settings.json` 의 `model` · `effortLevel` · `advisorModel` · `env` 3개 · `permissions` · `skip*` 플래그
-- `extraKnownMarketplaces` + `enabledPlugins` — **단 `swift-lsp` 는 빼라** (Swift 툴체인은 macOS 전용)
-- `claude mcp add --scope user caveman-shrink -- npx -y caveman-shrink` (노드 기반, OS 무관)
-- `skills/` 4개, `agents/` 2개 — 전부 마크다운, 실행 코드 없음 → 그대로 복사
+```
+https://raw.githubusercontent.com/jaefit/claude-config/main/SETUP.md 를 읽고 그대로 실행해줘. 나는 <OS> / 관리자 권한 <있음|없음>. 막히면 물어봐.
+```
 
-**2. 반드시 고쳐야 하는 것 (안 고치면 조용히 죽음)**
-- `hooks/notify.py` — macOS API(`afplay`/`osascript`) 의존. 윈도우용으로 다시 쓸 것
-- `statusline-command.sh` — `sh` + `jq` 필요. Git Bash 없으면 `.ps1` 로 포팅
-- `hooks/dev-start-hint.js` 와 `skills/dev-start`·`dev-end` 의 slug 계산 — 경로 구분자 가정이 POSIX
+전체 절차·검증·이식 함정은 **[SETUP.md](SETUP.md)** 에 있다. 임대·회사 장비에서 철수할 때는
+**[TEARDOWN.md](TEARDOWN.md)** — 로컬에 MCP OAuth 토큰과 대화기록이 남으므로 반드시 밟는다.
 
-상세는 맨 아래 [이식 노트](#다른-os-로-옮길-때) 표 참고.
+수동으로 하려면:
 
-**3. 검증 (중요 — "설정 파일을 썼다"는 동작 증명이 아니다)**
-- hook 은 **세션을 새로 시작해야** 로드된다. 고친 직후 같은 세션에서 확인하려 들지 말 것
-- status line: 실제 JSON 을 stdin 으로 물려 스크립트를 직접 실행해 출력이 나오는지 먼저 확인
-- slug: 추측하지 말고 `~/.claude/projects/` 에 **Claude Code 가 실제로 만든 디렉토리 이름**을 눈으로 보고 규칙을 맞출 것
-- 플러그인: `/plugin` 과 `/status` 로 확인
+```bash
+git clone https://github.com/jaefit/claude-config.git ~/claude-config
+cd ~/claude-config && ./install.sh          # Windows 권한 없으면 --copy
+```
+
+---
+
+## 이식 상태 (2026-08 기준)
+
+| 항목 | 상태 |
+|---|---|
+| `hooks/notify.py` | **해결.** macOS `afplay`/`osascript`, Windows `winsound`+NotifyIcon, Linux `notify-send` 로 런타임 분기 |
+| 알림 훅 인터프리터 | **해결.** `settings.json` 의 `/usr/bin/python3` 하드코딩을 `hooks/notify.sh` 래퍼로 교체 (`python3`/`python`/`py` 탐색) |
+| slug 계산 | **부분 해결.** 구분자·`:`·`.`·`_`·공백 치환 + `~/.claude/projects/` 스캔 폴백. **Windows 실제 규칙은 미검증** — 현장에서 확인하고 어긋나면 고쳐서 push 할 것 |
+| `statusline-command.sh` | `sh` + `jq` 필요. Windows 는 Git Bash + `winget install jqlang.jq` |
+| `install.sh` | 3-OS 겸용. Windows 에서 심링크가 조용히 복사본이 되는 걸 검사해서 경고한다 |
+| `swift-lsp` 플러그인 | Windows 에선 무의미하나 무해. `settings.json` 은 맥과 공유하므로 그대로 둔다 |
+| `caveman-shrink` MCP | `npx` 실행이 `CONNECTION_CLOSED` 로 실패 중 → `install.sh` 기본에서 제외. `--with-mcp` 로 시도 가능 |
+
+**검증 원칙 — "설정 파일을 썼다"는 동작 증명이 아니다.**
+훅은 세션을 새로 시작해야 로드된다. status line 은 JSON 을 stdin 으로 물려 직접 실행해 보고,
+slug 은 추측하지 말고 `~/.claude/projects/` 에 실제로 생긴 디렉토리 이름을 눈으로 확인한다.
+
+---
 
 **4. 이 repo 의 규칙 — 새 머신에서도 지킬 것**
 전역 skills/agents 에 **특정 프로젝트의 인명·일정·연구 내용을 적지 않는다.** 전역이라 무관한 세션에
 전부 따라 들어오고, 프로젝트가 바뀌면 stale 해지고, repo 를 공유하는 순간 같이 나간다.
 그런 건 프로젝트별 `CLAUDE.md` 나 `~/.claude/projects/<slug>/memory/` 에 둔다.
-
----
-
-## 새 머신 세팅 (macOS, 3줄)
-
-```bash
-brew install jq node gh && curl -fsSL https://claude.ai/install.sh | bash
-gh repo clone jaefit/claude-config ~/claude-config
-~/claude-config/install.sh && claude   # 첫 실행 시 플러그인 자동 설치 → /login
-```
-
-`install.sh` 기본은 **symlink 모드** — `~/.claude/*` 가 이 repo 를 가리킨다.
-이후 어느 머신에서 설정을 고치든 `git commit && push` / 반대편 `git pull` 로 동기화.
-링크 싫으면 `--copy`.
 
 ---
 
@@ -61,17 +61,21 @@ gh repo clone jaefit/claude-config ~/claude-config
 플러그인 캐시(`~/.claude/plugins/cache`)나 caveman 소스를 커밋할 이유가 없다 — 버전 고정이
 필요하면 `enabledPlugins` 대신 마켓플레이스 커밋 SHA 를 적어두는 쪽이 낫다.
 
-## 담긴 것 (개인물 12개)
+## 담긴 것 (개인물 13개)
 
 ```
 settings.json           전역 설정 — 경로는 전부 $HOME (아래 참고)
 settings.local.json     로컬 권한 allow 2줄
 statusline-command.sh   2줄 status line, Catppuccin Mocha 24-bit
-hooks/notify.py            Notification  → macOS 알림
+hooks/notify.py            Notification  → 알림 본체 (mac/win/linux 분기)
+hooks/notify.sh            └ 인터프리터 탐색 래퍼 (settings.json 이 부르는 쪽)
 hooks/dev-start-hint.js    SessionStart  → dev-log 있으면 /dev-start 안내
 skills/{dev-start,dev-end,proofread,review-paper}/SKILL.md
 agents/{proofreader,r-reviewer}.md
 install.sh              ~/.claude 로 symlink(기본) 또는 copy
+uninstall.sh            임대·회사 장비 철수 (~/.claude, ~/.claude.json 삭제)
+SETUP.md                새 머신 설치 — 에이전트용 지시서
+TEARDOWN.md             철수 — 에이전트용 지시서
 ```
 
 ### settings.json 주요 값
@@ -154,20 +158,18 @@ tar xzf claude-memory.tgz -C ~/.claude
 
 ## 다른 OS 로 옮길 때
 
-이 repo 는 macOS 산이다. **윈도우에서는 그대로 복사하면 일부가 조용히 죽는다.**
-아래는 무엇이 왜 깨지는지와 대체 방향 — 자동 설치 스크립트는 macOS 전용이므로,
-다른 OS 에서는 이 표를 근거로 각 항목을 손으로(또는 에이전트에게 시켜) 옮기는 걸 전제한다.
+**깨지던 것은 대부분 고쳤다.** 현재 상태는 위 [이식 상태](#이식-상태-2026-08-기준) 표,
+실제 절차와 남은 함정은 **[SETUP.md](SETUP.md)** 를 본다. 여기 있던 "무엇이 왜 깨지는가" 표는
+그 두 곳으로 옮겼다.
 
-| 항목 | 윈도우에서 생기는 일 | 대체 방향 |
-|---|---|---|
-| `hooks/notify.py` | **작동 안 함.** `afplay`·`osascript`(AppleScript)·`/System/Library/Sounds/Morse.aiff` 전부 macOS 전용. `command` 의 `/usr/bin/python3` 경로도 없음 | PowerShell 토스트(BurntToast 모듈) 또는 `[console]::beep`. hook `command` 는 `python`/`pwsh` 로 |
-| `statusline-command.sh` | `sh` + `jq` 필요. Claude Code 는 윈도우에서 `command` 를 **Git Bash 로 보내고, Git Bash 가 없으면 PowerShell 로 보낸다** → Git Bash 없으면 실패 | Git Bash 설치 + `winget install jqlang.jq`, 아니면 같은 로직을 `.ps1` 로 포팅하고 `powershell -NoProfile -File …` 로 호출 |
-| `install.sh` | bash 필요(Git Bash 로는 실행됨). 다만 `ln -s` 가 윈도우에선 개발자 모드/관리자 권한 없이는 심볼릭 링크가 아니라 **복사본**이 됨 → repo 와 `~/.claude` 동기화가 끊김 | 복사 모드로 쓰고 갱신은 `git pull` + 재실행. 또는 개발자 모드 켜고 `MSYS=winsymlinks:nativestrict` |
-| `settings.json` 의 `$HOME` | **문제 없음.** hook shell form 과 statusLine 은 셸을 거치고, Git Bash·PowerShell 둘 다 `$HOME` 을 확장한다 | 경로는 백슬래시 대신 **슬래시**로 쓸 것 (Git Bash 가 `\` 를 이스케이프로 먹는다). `~` 도 동작 |
-| `swift-lsp` 플러그인 | 쓸모 없음 (Swift 툴체인이 macOS 전용) | `enabledPlugins` 에서 제거 |
-| `caveman`·`frontend-design` 플러그인, `caveman-shrink` MCP | 노드 기반 → **그대로 동작** | 그대로 |
-| `hooks/dev-start-hint.js` 의 slug | `cwd.replace(/\//g, '-')` 가 `C:\Users\…` 의 백슬래시·드라이브 콜론을 못 다룸 → 메모리 디렉토리를 못 찾고 조용히 종료 | 구분자와 `:` 까지 치환하도록 수정. 실제 Claude Code 가 만든 `~/.claude/projects/` 디렉토리 이름을 먼저 확인하고 규칙을 맞출 것 |
-| `skills/dev-start`·`dev-end` 의 slug 계산 | 같은 문제 (`pwd \| sed 's#[/._ ]#-#g'`). Git Bash `pwd` 는 `/c/Users/…` 를 주지만 Claude Code 는 윈도우 경로로 이름을 만든다 → 불일치 | 위와 동일. 두 파일 모두 §0 의 폴백 계산을 고칠 것 |
-| 24-bit 트루컬러 status line | Windows Terminal 은 지원. 구형 `conhost` 는 깨짐 | Windows Terminal 사용 |
+아직 유효한 배경 지식만 남긴다:
 
-**리눅스**는 `notify.py`(→ `notify-send`)와 `brew` 설치 명령만 바꾸면 나머지는 대체로 그대로 간다.
+- Claude Code 는 윈도우에서 hook/statusLine 의 `command` 를 **Git Bash 로 보내고,
+  Git Bash 가 없으면 PowerShell 로 보낸다.** 이 repo 의 훅은 전부 `sh` 기준 → Git Bash 필수.
+- `settings.json` 의 `$HOME` 은 **문제 없다.** Git Bash·PowerShell 둘 다 확장한다.
+  단 경로는 백슬래시 대신 **슬래시**로 쓸 것 (Git Bash 가 `\` 를 이스케이프로 먹는다).
+- 윈도우에서 `ln -s` 는 개발자 모드/관리자 권한이 없으면 심볼릭 링크가 아니라 **복사본**을 만든다.
+  `install.sh` 가 이걸 검사해서 경고한다.
+- 24-bit 트루컬러 status line 은 Windows Terminal 에서만 제대로 나온다. 구형 `conhost` 는 깨진다.
+
+**리눅스**는 `notify.py` 가 이미 `notify-send` 로 분기하므로 패키지 설치 명령만 바꾸면 대체로 그대로 간다.
