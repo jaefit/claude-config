@@ -31,7 +31,7 @@ cd ~/claude-config && ./install.sh          # Windows 권한 없으면 --copy
 |---|---|
 | `hooks/notify.py` | **해결.** macOS `afplay`/`osascript`, Windows `winsound`+NotifyIcon, Linux `notify-send` 로 런타임 분기 |
 | 알림 훅 인터프리터 | **해결.** `settings.json` 의 `/usr/bin/python3` 하드코딩을 `hooks/notify.sh` 래퍼로 교체 (`python3`/`python`/`py` 탐색) |
-| slug 계산 | **부분 해결.** 구분자·`:`·`.`·`_`·공백 치환 + `~/.claude/projects/` 스캔 폴백. **Windows 실제 규칙은 미검증** — 현장에서 확인하고 어긋나면 고쳐서 push 할 것 |
+| slug 계산 | **해결 · Windows 실측 검증됨 (2026-08-26).** 구분자·`:`·`.`·`_`·공백 치환 + `~/.claude/projects/` 스캔 폴백. `C:\WINDOWS\system32` → `C--WINDOWS-system32` 로 `slugify()` 결과와 실제 디렉토리 이름이 일치했다. 공백·`.`·`_` 가 든 경로는 아직 미확인 — 어긋나면 고쳐서 push 할 것 |
 | `statusline-command.sh` | `sh` + `jq` 필요. Windows 는 Git Bash + `winget install jqlang.jq` |
 | `install.sh` | 3-OS 겸용. Windows 에서 심링크가 조용히 복사본이 되는 걸 검사해서 경고한다 |
 | `swift-lsp` 플러그인 | Windows 에선 무의미하나 무해. `settings.json` 은 맥과 공유하므로 그대로 둔다 |
@@ -55,7 +55,7 @@ slug 은 추측하지 말고 `~/.claude/projects/` 에 실제로 생긴 디렉�
 | | 어떻게 나르나 | repo 안 파일 |
 |---|---|---|
 | **공개 플러그인** caveman · frontend-design · swift-lsp | `settings.json` 의 `extraKnownMarketplaces` + `enabledPlugins` 선언만. Claude Code 가 첫 실행 때 GitHub 에서 clone | 0개 |
-| **공개 MCP** caveman-shrink | `claude mcp add --scope user caveman-shrink -- npx -y caveman-shrink` (install.sh 가 실행) | 0개 |
+| **공개 MCP** | 없다. install.sh 는 MCP 를 하나도 등록하지 않는다 — `caveman-shrink` 를 뺀 경위는 위 「이식 상태」 표 참고 | 0개 |
 | **개인 설정** settings · statusline · hooks 2 · skills 4 · agents 2 | 이 repo (약 40KB) | 12개 |
 
 플러그인 캐시(`~/.claude/plugins/cache`)나 caveman 소스를 커밋할 이유가 없다 — 버전 고정이

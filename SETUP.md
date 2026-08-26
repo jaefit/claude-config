@@ -124,12 +124,13 @@ claude
 - `hooks/dev-start-hint.js` 의 slug 계산이 `/` 만 치환했다 → 구분자와 `: . _ 공백` 전부 치환,
   빗나가면 `~/.claude/projects/` 를 스캔하는 폴백 추가.
 - `skills/dev-start`·`dev-end` §0 의 `sed` 규칙도 같이 수정.
+- Windows slug 규칙을 **실측 검증했다 (2026-08-26)**: `C:\WINDOWS\system32` → `C--WINDOWS-system32`.
+  `slugify()` 결과와 실제 `~/.claude/projects/` 디렉토리 이름이 일치했다.
 
 **아직 확실치 않은 것 — 현장에서 확인할 것:**
 
-- Windows 에서 Claude Code 가 `~/.claude/projects/` 디렉토리 이름을 정확히 어떤 규칙으로
-  만드는지 검증된 바 없다. `C:\Users\jay\proj` → `C--Users-jay-proj` 로 가정했다.
-  **실제로 디렉토리가 생긴 뒤 `ls ~/.claude/projects` 로 규칙을 직접 확인하고,
+- slug 규칙은 Windows 경로 하나에서만 확인됐다. 공백·`.`·`_` 가 든 경로나 다른 OS 는 아직 미확인이다.
+  **새 머신에서는 디렉토리가 생긴 뒤 `ls ~/.claude/projects` 로 규칙을 직접 확인하고,
   다르면 `hooks/dev-start-hint.js` 의 `slugify()` 와 두 SKILL.md 의 `sed` 를 실제에 맞춰 고쳐라.**
   고쳤으면 commit + push 해서 다음 머신이 덕을 보게 할 것.
 - 24-bit 트루컬러 status line 은 Windows Terminal 에서만 제대로 나온다. 구형 `conhost` 는 깨진다.
