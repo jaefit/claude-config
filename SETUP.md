@@ -66,6 +66,37 @@ Claude Code 는 Windows 에서 hook/statusLine 의 `command` 를 **Git Bash 로 
 Git Bash 가 없으면 PowerShell 로 보낸다.** 이 repo 의 훅은 전부 `sh` 기준이므로
 Git Bash 가 반드시 있어야 한다.
 
+### 1-2. 터미널 환경 — 상태줄이 제대로 보이려면
+
+`install.sh` 와 `uninstall.sh` 는 `~/.claude` 안만 다룬다. **아래는 전부 그 밖이라
+스크립트가 손대지 않는다.** 안 맞춰도 Claude Code 는 동작하지만 상태줄이 깨져 보인다.
+
+**터미널** — 24-bit 트루컬러가 필요하다. Windows 는 Windows Terminal 을 쓴다.
+구형 `conhost`(옛날 cmd 창)에서는 색이 통째로 깨진다.
+
+**폰트** — 상태줄이 쓰는 비ASCII 문자는 아래 8개뿐이다.
+
+```
+—  ·  ›  ✚  …  ▓  ░  ↻
+```
+
+전부 유니코드 BMP 문자이고 **Nerd Font 전용 글리프(Private Use Area)는 쓰지 않는다.**
+따라서 Nerd Font 가 필수는 아니다. 이 8개가 다 나오는 고정폭 폰트면 된다.
+한글을 같이 쓴다면 한글 커버리지도 있어야 폭이 안 어긋난다.
+
+참고로 이 설정을 만든 환경은 Windows Terminal + PowerShell 7 + D2Coding Ligature Nerd Font 11pt +
+Catppuccin Mocha 배색이다. 취향이지 요구사항이 아니다.
+
+**Windows Terminal 설정을 고칠 거라면 먼저 백업한다.**
+
+```bash
+cd "$LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState"
+cp settings.json settings.json.bak
+```
+
+임대·회사 장비라면 이 파일이 **장비 주인의 프로필까지 들어 있는 파일**이라는 점을 기억해라.
+통째로 덮어쓰지 말고 필요한 키만 고치고, 철수할 때 백업본으로 되돌린다 (`TEARDOWN.md` 5단계).
+
 ### 2. 심링크 여부 결정 (Windows 만 해당)
 
 - **관리자 권한 + 개발자 모드 ON** → 심링크 모드. `git pull` 만으로 갱신되고 양쪽 머신 동기화됨.

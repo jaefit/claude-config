@@ -69,6 +69,10 @@ cd ~/claude-config
 - **세션 중 깔거나 바꾼 것 되돌리기.** 터미널 폰트, 터미널 설정 파일, 추가로 깐 셸 등.
   예: `winget uninstall Microsoft.PowerShell` / 설정 → 글꼴에서 추가한 폰트 제거 /
   Windows Terminal `settings.json` 백업본으로 원복.
+- **`codex` 플러그인을 썼다면 Codex CLI 도 정리한다.** 플러그인 선언만으로는 안 깔리지만,
+  쓰려고 깔았다면 `~/.codex/` 에 **ChatGPT 로그인 토큰과 대화기록**이 쌓여 있다.
+  `npm uninstall -g @openai/codex` + `rm -rf ~/.codex` + ChatGPT 계정에서 기기 세션 해제.
+  용량이 GB 단위로 커질 수 있어 눈에 잘 띈다.
 - `~/.ssh` 를 이 장비에서 처음 만들었다면 삭제: `rm -rf ~/.ssh`
 - (선택) 런타임 정리:
   `winget uninstall Microsoft.PowerShell jqlang.jq OpenJS.NodeJS Python.Python.3.12 Git.Git`
