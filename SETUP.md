@@ -66,7 +66,7 @@ Claude Code 는 Windows 에서 hook/statusLine 의 `command` 를 **Git Bash 로 
 Git Bash 가 없으면 PowerShell 로 보낸다.** 이 repo 의 훅은 전부 `sh` 기준이므로
 Git Bash 가 반드시 있어야 한다.
 
-### 1-2. 터미널 환경 — 상태줄이 제대로 보이려면
+### 1-1. 터미널 환경 — 상태줄이 제대로 보이려면
 
 `install.sh` 와 `uninstall.sh` 는 `~/.claude` 안만 다룬다. **아래는 전부 그 밖이라
 스크립트가 손대지 않는다.** 안 맞춰도 Claude Code 는 동작하지만 상태줄이 깨져 보인다.
