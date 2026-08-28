@@ -32,7 +32,7 @@ cd ~/claude-config && ./install.sh          # Windows 권한 없으면 --copy
 | `hooks/notify.py` | **해결.** macOS `afplay`/`osascript`, Windows `winsound`+NotifyIcon, Linux `notify-send` 로 런타임 분기 |
 | 알림 훅 인터프리터 | **해결.** `settings.json` 의 `/usr/bin/python3` 하드코딩을 `hooks/notify.sh` 래퍼로 교체 (`python3`/`python`/`py` 탐색) |
 | slug 계산 | **해결 · Windows 실측 검증됨 (2026-08-26).** 구분자·`:`·`.`·`_`·공백 치환 + `~/.claude/projects/` 스캔 폴백. `C:\WINDOWS\system32` → `C--WINDOWS-system32` 로 `slugify()` 결과와 실제 디렉토리 이름이 일치했다. 공백·`.`·`_` 가 든 경로는 아직 미확인 — 어긋나면 고쳐서 push 할 것 |
-| `statusline-command.sh` | `sh` + `jq` 필요. Windows 는 Git Bash + `winget install jqlang.jq` |
+| `statusline-command.sh` | `sh` + `jq` 필요. Windows 는 Git Bash + `winget install jqlang.jq`. **Windows 함정 2건 해결 (2026-08-27).** ① Claude Code 가 넘기는 네이티브 경로(`C:\Users\me\proj`)와 POSIX `$HOME`(`/c/Users/me`)이 안 맞아 tildify 가 통째로 실패했다 — 양쪽을 `/c/...` 꼴로 접는 `normalize_path()` 추가. ② 5시간 리셋 시각의 `date -r EPOCH` 는 BSD 전용이라 GNU coreutils(Git Bash 포함)에서 조용히 빈 값이 됐다 — `date -d @EPOCH` 를 먼저 시도하고 실패하면 `-r` 로 폴백 |
 | `install.sh` | 3-OS 겸용. Windows 에서 심링크가 조용히 복사본이 되는 걸 검사해서 경고한다 |
 | `swift-lsp` 플러그인 | Windows 에선 무의미하나 무해. `settings.json` 은 맥과 공유하므로 그대로 둔다 |
 | `caveman-shrink` MCP | **등록하지 않는다.** 독립 서버가 아니라 stdio 프록시(다른 MCP 서버를 감싸 description 을 압축)인데 upstream 인자 없이 등록돼 있었다. 게다가 stdio 전용이라 claude.ai HTTP 커넥터는 못 감싼다. 2026-08-23 제거 |

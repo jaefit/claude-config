@@ -124,6 +124,15 @@ claude
 - `hooks/dev-start-hint.js` 의 slug 계산이 `/` 만 치환했다 → 구분자와 `: . _ 공백` 전부 치환,
   빗나가면 `~/.claude/projects/` 를 스캔하는 폴백 추가.
 - `skills/dev-start`·`dev-end` §0 의 `sed` 규칙도 같이 수정.
+- `statusline-command.sh` 가 `$HOME` 으로 직접 경로를 접었다 → Windows 에서 Claude Code 는 네이티브
+  경로(`C:\Users\me\proj`)를 넘기는데 `$HOME` 은 POSIX(`/c/Users/me`)라 한 번도 안 맞았다.
+  tildify 가 실패하면 그 아래 breadcrumb 이 `/` 로 쪼개므로 경로 전체가 한 덩어리가 되어
+  `proj › sub` 대신 `C:\Users\me\Desktop\proj\sub` 가 찍혔다 → `normalize_path()` 로 양쪽을
+  `/c/...` 꼴로 접은 뒤 비교하도록 수정 (2026-08-27).
+- 같은 파일에서 5시간 리셋 시각을 `date -r EPOCH` 로 뽑았다 → BSD/macOS 전용 문법이다.
+  GNU coreutils(Linux, Windows 의 Git Bash)에서는 `-d` 가 전혀 다른 뜻이라 **에러 없이 빈 값**이
+  되어 `(↻HH:MM)` 이 조용히 사라졌다 → `date -d @EPOCH` 를 먼저 시도하고 안 되면 `-r` 로 폴백 (2026-08-27).
+  **두 함정 모두 종료코드가 0 이라 로그로는 안 잡힌다.** 상태줄을 눈으로 봐야 발견된다.
 - Windows slug 규칙을 **실측 검증했다 (2026-08-26)**: `C:\WINDOWS\system32` → `C--WINDOWS-system32`.
   `slugify()` 결과와 실제 `~/.claude/projects/` 디렉토리 이름이 일치했다.
 

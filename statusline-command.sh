@@ -46,16 +46,31 @@ USAGE_C="${ESC}[38;2;245;194;231m" # Pink     #f5c2e7 — shared by 5h + 7d plan
 GIT_C="${ESC}[38;2;148;226;213m"  # Teal      #94e2d5 — git branch/status
 TIME_C="${ESC}[38;2;250;179;135m" # Peach     #fab387 — shared by date + time (one datetime block, one color)
 
+# On Windows, Claude Code hands over native paths (C:\Users\me\proj) while
+# $HOME is POSIX (/c/Users/me). Without normalizing, tildify never matches and
+# the breadcrumb below — which splits on "/" — sees the whole path as a single
+# segment, so the status line prints C:\Users\me\Desktop\proj\sub instead of
+# "proj › sub". Fold both forms to the /c/... shape before comparing.
+normalize_path() {
+  p=$(printf '%s' "$1" | tr '\\' '/')
+  case "$p" in
+    [A-Za-z]:/*) p="/$(printf '%s' "${p%%:*}" | tr '[:upper:]' '[:lower:]')${p#*:}" ;;
+  esac
+  printf '%s' "$p"
+}
+
+home_n=$(normalize_path "$HOME")
+
 tildify() {
   case "$1" in
-    "$HOME") printf '~' ;;
-    "$HOME"/*) printf '~%s' "${1#"$HOME"}" ;;
+    "$home_n") printf '~' ;;
+    "$home_n"/*) printf '~%s' "${1#"$home_n"}" ;;
     *) printf '%s' "$1" ;;
   esac
 }
 
-proj_t=$(tildify "$proj_raw")
-cwd_t=$(tildify "$cwd_raw")
+proj_t=$(tildify "$(normalize_path "$proj_raw")")
+cwd_t=$(tildify "$(normalize_path "$cwd_raw")")
 
 # root = basename of the project root (workspace.project_dir when Claude Code
 # provides it — this already reflects the detected project root, so no extra
@@ -187,9 +202,14 @@ if [ -n "$five" ]; then
   fivep=$(printf "%.0f" "$five")
   usage_body=$(fmt_metric "5h" "$fivep" "$USAGE_C")
   # 5h window reset clock, annotation-style (dim parens) like "model (effort)".
-  # BSD date: -r takes epoch seconds. Guarded so a bad value just omits it.
+  # Epoch -> HH:MM. GNU coreutils (Linux, Git Bash on Windows) wants -d @EPOCH;
+  # BSD/macOS date wants -r EPOCH, and there -d means something else entirely.
+  # Try GNU first, fall back to BSD; a bad value just omits the annotation.
   if [ -n "$five_reset" ]; then
-    five_reset_hm=$(date -r "$five_reset" +%H:%M 2>/dev/null)
+    five_reset_hm=$(date -d "@$five_reset" +%H:%M 2>/dev/null)
+    if [ -z "$five_reset_hm" ]; then
+      five_reset_hm=$(date -r "$five_reset" +%H:%M 2>/dev/null)
+    fi
     if [ -n "$five_reset_hm" ]; then
       usage_body="${usage_body} ${SEP}(↻${five_reset_hm})${RESET}"
     fi
