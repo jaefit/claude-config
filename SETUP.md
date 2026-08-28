@@ -95,11 +95,31 @@ claude
 - `/login` 으로 계정 로그인.
 - `/mcp` 로 claude.ai 커넥터(Todoist·Gmail·Drive·Calendar·Notion)가 붙는지 확인.
   **이건 계정 쪽에 붙어 있어서 로컬로 옮길 게 없다.** 로그인하면 따라온다.
-- 플러그인(`caveman`, `superpowers`, `code-review`, `frontend-design`, `swift-lsp`)은
+- 플러그인 9개(아래 표)는
   `settings.json` 의 `extraKnownMarketplaces` + `enabledPlugins` 선언을 보고 첫 실행 때
   GitHub 에서 자동 설치된다. `/plugin` 으로 확인.
   - `swift-lsp` 는 macOS 전용 툴체인이라 Windows 에선 무의미하지만 그냥 둬도 해롭지 않다.
     (settings.json 은 맥과 공유하므로 여기서 지우면 맥에서도 빠진다.)
+
+| 플러그인 | 마켓플레이스 | 쓰임 |
+|---|---|---|
+| `caveman` | `JuliusBrussee/caveman` | 출력 압축 모드 + 관련 스킬·서브에이전트 |
+| `superpowers` | `anthropics/claude-plugins-official` | 프로세스 스킬 (brainstorming · systematic-debugging · TDD 등) |
+| `code-review` | 〃 | `/code-review` |
+| `frontend-design` | 〃 | UI 만들 때의 디자인 가이드 |
+| `swift-lsp` | 〃 | macOS 전용 |
+| `codex` | `openai/codex-plugin-cc` | Codex CLI 로 작업 위임 |
+| `product-management` · `marketing` · `data` | `anthropics/knowledge-work-plugins` | 비개발 산출물용 워크플로 스킬 |
+
+**두 가지 함정:**
+
+- **설치 직후 같은 세션에서는 스킬로 등록되지 않는다.** `Skill` 툴이 `Unknown skill` 로 실패한다.
+  세션을 새로 시작해야 잡힌다. 급하면
+  `~/.claude/plugins/cache/<마켓플레이스>/<플러그인>/<버전>/skills/<스킬>/SKILL.md` 를 직접 읽어
+  워크플로만 따라도 된다.
+- **`codex` 플러그인은 Codex CLI 가 따로 있어야 동작한다.** 플러그인 자체는 위임 인터페이스일 뿐이다.
+  `npm install -g @openai/codex` 로 설치하고 ChatGPT 계정 로그인이 필요하다. 약 400 MB 를 쓰고
+  `~/.codex/` 에 로그인 토큰과 대화기록이 쌓이므로, 임대·회사 장비라면 `TEARDOWN.md` 를 함께 볼 것.
 
 ### 5. 검증 — "파일을 썼다"는 동작 증명이 아니다
 

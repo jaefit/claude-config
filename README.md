@@ -54,9 +54,9 @@ slug 은 추측하지 말고 `~/.claude/projects/` 에 실제로 생긴 디렉�
 
 | | 어떻게 나르나 | repo 안 파일 |
 |---|---|---|
-| **공개 플러그인** caveman · frontend-design · swift-lsp | `settings.json` 의 `extraKnownMarketplaces` + `enabledPlugins` 선언만. Claude Code 가 첫 실행 때 GitHub 에서 clone | 0개 |
+| **공개 플러그인** 9개 — caveman · superpowers · code-review · frontend-design · swift-lsp · codex · product-management · marketing · data | `settings.json` 의 `extraKnownMarketplaces` + `enabledPlugins` 선언만. Claude Code 가 첫 실행 때 GitHub 에서 clone | 0개 |
 | **공개 MCP** | 없다. install.sh 는 MCP 를 하나도 등록하지 않는다 — `caveman-shrink` 를 뺀 경위는 위 「이식 상태」 표 참고 | 0개 |
-| **개인 설정** settings · statusline · hooks 2 · skills 4 · agents 2 | 이 repo (약 40KB) | 12개 |
+| **개인 설정** settings · statusline · hooks 3 · skills 4 · agents 2 | 이 repo (약 40KB) | 12개 |
 
 플러그인 캐시(`~/.claude/plugins/cache`)나 caveman 소스를 커밋할 이유가 없다 — 버전 고정이
 필요하면 `enabledPlugins` 대신 마켓플레이스 커밋 SHA 를 적어두는 쪽이 낫다.

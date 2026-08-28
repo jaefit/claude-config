@@ -38,10 +38,14 @@
   },
   "enabledPlugins": {
     "caveman@caveman": true,
+    "code-review@claude-plugins-official": true,
+    "codex@openai-codex": true,
+    "data@knowledge-work-plugins": true,
     "frontend-design@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true,
+    "marketing@knowledge-work-plugins": true,
+    "product-management@knowledge-work-plugins": true,
     "superpowers@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true
+    "swift-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -54,6 +58,18 @@
       "source": {
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "knowledge-work-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/knowledge-work-plugins"
+      }
+    },
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
       }
     }
   },
