@@ -1,0 +1,103 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "CLAUDE_CODE_THINKING_ANIMATION": "simple"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -NoProfile -NonInteractive -File \"$(cygpath -w \"$HOME/.claude/hooks/notify.ps1\")\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/hooks/dev-start-hint.js\"",
+            "timeout": 5,
+            "statusMessage": "Checking dev-log..."
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "sh \"$HOME/.claude/statusline-command.sh\""
+  },
+  "enabledPlugins": {
+    "caveman@caveman": true,
+    "frontend-design@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "eli5@claude-community": true,
+    "cc-plugin-you-should-know@builtin": true,
+    "context7@anthropic-plugin-directory": true,
+    "skill-creator@anthropic-plugin-directory": true,
+    "ponytail@ponytail": true
+  },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "claude-community": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-community"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    }
+  },
+  "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-fable-5-1": {
+      "effortLevel": "high"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    },
+    "claude-fable-5-2": {
+      "effortLevel": "high"
+    }
+  },
+  "advisorModel": "claude-fable-5-2",
+  "autoUpdatesChannel": "latest",
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "switchModelsOnFlag": false,
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": false,
+  "skipAutoPermissionPrompt": true
+}

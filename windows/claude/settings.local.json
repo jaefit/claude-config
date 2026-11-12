@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pwsh -NoProfile -NonInteractive -File *notify.ps1*)",
+      "Bash(node *dev-start-hint.js*)",
+      "Bash(sh *statusline-command.sh*)"
+    ]
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "schemes": [
+    {
+      "name": "cc Catppuccin Mocha",
+      "background": "#1E1E2E",
+      "foreground": "#CDD6F4",
+      "cursorColor": "#F5E0DC",
+      "selectionBackground": "#585B70",
+      "black": "#45475A",
+      "red": "#F38BA8",
+      "green": "#A6E3A1",
+      "yellow": "#F9E2AF",
+      "blue": "#89B4FA",
+      "purple": "#F5C2E7",
+      "cyan": "#94E2D5",
+      "white": "#BAC2DE",
+      "brightBlack": "#585B70",
+      "brightRed": "#F38BA8",
+      "brightGreen": "#A6E3A1",
+      "brightYellow": "#F9E2AF",
+      "brightBlue": "#89B4FA",
+      "brightPurple": "#F5C2E7",
+      "brightCyan": "#94E2D5",
+      "brightWhite": "#A6ADC8"
+    }
+  ],
+  "profiles": [
+    {
+      "guid": "{6b1f3c2e-9a4d-4e7b-8c15-2f0d7a9e4b31}",
+      "name": "cc",
+      "commandline": "pwsh.exe -NoLogo",
+      "colorScheme": "cc Catppuccin Mocha",
+      "unfocusedAppearance": {
+        "background": "#161721",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{2d0182c6-c69d-4650-87e6-2e791030ed86}",
+      "name": "cc bondswap_monitor",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='bondswap_monitor'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\task\\bondswap_monitor",
+      "tabTitle": "bondswap_monitor",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#A6E3A1",
+      "background": "#14241A",
+      "unfocusedAppearance": {
+        "background": "#101B14",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{2f01439c-8d7a-4069-bcde-e13aa052ce9c}",
+      "name": "cc fwdcd_monitor",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='fwdcd_monitor'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\task\\fwdcd_monitor",
+      "tabTitle": "fwdcd_monitor",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#89B4FA",
+      "background": "#17202F",
+      "unfocusedAppearance": {
+        "background": "#121822",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{3a6431cc-7e9e-4a0d-bc34-354016f5c003}",
+      "name": "cc repo_fund",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='repo_fund'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\task\\repo_fund",
+      "tabTitle": "repo_fund",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#F38BA8",
+      "background": "#291C20",
+      "unfocusedAppearance": {
+        "background": "#1E1518",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{2cba2785-6787-4a4d-8728-a945aa7ae7e7}",
+      "name": "cc Desktop",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='Desktop'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop",
+      "tabTitle": "Desktop",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#94E2D5",
+      "unfocusedAppearance": {
+        "background": "#161721",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{4a5ba326-088f-4de7-9fe5-c2a12a7115d6}",
+      "name": "cc Vault",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='Vault'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\Vault",
+      "tabTitle": "Vault",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#CBA6F7",
+      "background": "#231C2C",
+      "unfocusedAppearance": {
+        "background": "#1A1520",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{982c050d-ac8a-45d8-a1ae-6f1102317de0}",
+      "name": "cc project",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='project'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\task\\project",
+      "tabTitle": "project",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#74C7EC",
+      "background": "#0E232C",
+      "unfocusedAppearance": {
+        "background": "#0D1A20",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{7c3e9a41-5b2d-4f86-a0e7-1d94c6b2f853}",
+      "name": "cc ficc_news_alarm",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='ficc_news_alarm'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\task\\ficc_news_alarm",
+      "tabTitle": "ficc_news_alarm",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#F5C2E7",
+      "background": "#291A25",
+      "unfocusedAppearance": {
+        "background": "#1E141C",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{e4a8d2f6-3c91-4b7e-8f05-6a2c1e9d7b40}",
+      "name": "cc mailbackup",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='mailbackup'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\mailbackup",
+      "tabTitle": "mailbackup",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#FAB387",
+      "unfocusedAppearance": {
+        "background": "#161721",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{5c75ffd5-8d3d-4276-bf6c-d978cc3d4590}",
+      "name": "cc 업무",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='업무'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\업무",
+      "tabTitle": "업무",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#F9E2AF",
+      "unfocusedAppearance": {
+        "background": "#161721",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{91d1e08c-e37d-47a1-a887-b1890dfde894}",
+      "name": "cc study",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='study'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\task\\study",
+      "tabTitle": "study",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#B4BEFE",
+      "background": "#1B1C30",
+      "unfocusedAppearance": {
+        "background": "#141523",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{7716e193-0621-419c-bcbf-50ea9ec85da0}",
+      "name": "cc signals",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='signals'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\signals",
+      "tabTitle": "signals",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#89DCEB",
+      "background": "#0E2426",
+      "unfocusedAppearance": {
+        "background": "#0C1A1C",
+        "foreground": "#9399B2"
+      }
+    },
+    {
+      "guid": "{3544eab2-6e70-4b64-80e8-77cd3d8a0bcf}",
+      "name": "cc market_feed",
+      "commandline": "pwsh.exe -NoLogo -NoExit -Command \"$env:CC_TAB='market_feed'; try { claude } finally { Remove-Item Env:CC_TAB -ErrorAction Ignore }\"",
+      "startingDirectory": "C:\\Users\\infomax\\Desktop\\market_feed",
+      "tabTitle": "market_feed",
+      "suppressApplicationTitle": true,
+      "colorScheme": "cc Catppuccin Mocha",
+      "tabColor": "#F2CDCD",
+      "background": "#271D21",
+      "unfocusedAppearance": {
+        "background": "#1C1518",
+        "foreground": "#9399B2"
+      }
+    }
+  ]
+}
