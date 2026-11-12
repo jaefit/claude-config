@@ -43,7 +43,7 @@ git 설정:
 `~/.claude` 자체는 로컬 git이고 원격을 붙이지 않는다. desk 업무 파일과 폴더 메모리를 같이 추적하기 때문이다. 저장소에는 `windows/export.sh`가 고른 것만 복사해 올린다.
 
 - 올리는 것: `CLAUDE.md`(dewrite 줄만), `settings.json`(`remote`, `model` 키 뺌), `settings.local.json`, `statusline-command.sh`, `hooks/dev-start-hint.js`, `hooks/notify.ps1`, 스킬 `dev-start`·`dev-end`·`dewrite`·`socratic-tutor`·`writing-for-agents`, PowerShell 프로필, WT Fragments 파일, 이 문서와 런북.
-- 로컬에만 두는 것: `desk/`의 나머지 파일, `projects/*/memory/`, `skills/dewrite/references/samples/`(내부 보고서), `skills/to-questionnaire/`(예시에 실제 거래 이름), `skills/synced/`(계정이 준다). 같은 폴더 구조를 쓰는 PC에는 사용자가 따로 옮긴다.
+- 로컬에만 두는 것: `desk/`의 나머지 파일, `projects/*/memory/`, `skills/dewrite/references/samples/`, `skills/to-questionnaire/`, `skills/synced/`(계정이 준다). 같은 폴더 구조를 쓰는 PC에는 사용자가 따로 옮긴다.
 - `agents/`, `skills/proofread`, `skills/review-paper`는 저장소 루트 것과 같아서 `windows/`에 다시 넣지 않았다.
 
 | 경로 | 내용 | 표시 |
@@ -136,7 +136,7 @@ git 설정:
 - 전역 `CLAUDE.md`가 매 세션에 싣는 것: dewrite 글쓰기 규칙 12개(1.8KB), `desk/user.md`(사용자와 일하는 방식, 2KB), `desk/rules.md`(폴더 사이 규칙 8개, 2.8KB), 그리고 `rules.md`가 불러오는 `desk/map.md`(폴더 지도, 7.9KB).
 - desk 주제 파일(`toolchain`, `infomax`, `workbook-style`, `business-data`, `lseg-data` 등)은 필요한 폴더의 `CLAUDE.md`가 `@~/.claude/desk/<파일>.md`로 불러온다. 목록과 크기 상한은 `desk/paths.md`.
 - 폴더 메모리는 `~/.claude/projects/<슬러그>/memory/`에 `MEMORY.md`(색인), `devlog.md`, `next_todos.md`와 사실 하나에 파일 하나.
-- 새 PC에서 같은 Desktop 폴더 구조를 쓰지 않으면 `user.md`와 dewrite만 가져가고 `rules.md`, `map.md`, `handoff.md`는 뺀다. 그때는 전역 `CLAUDE.md`의 셋째 줄도 지운다.
+- `windows/claude/CLAUDE.md`는 dewrite 줄만 싣는다. 새 PC에서 같은 Desktop 폴더 구조를 쓰면 `desk/`를 따로 옮긴 뒤 `user.md`, `rules.md` 두 줄을 다시 넣는다. 다른 구조면 그대로 쓴다.
 
 ## 3. PowerShell 프로필 [윈도우]
 

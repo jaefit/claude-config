@@ -16,8 +16,8 @@ for s in dev-start dev-end dewrite socratic-tutor writing-for-agents; do
   cp -R "$SRC/skills/$s" "$OUT/claude/skills/"
 done
 
-# Held back: an internal report used as a dewrite sample, and to-questionnaire
-# (its example names a real counterparty).
+# Kept local: the dewrite sample documents. skills/to-questionnaire is kept local too
+# (it is absent from the loop above).
 rm -rf "$OUT/claude/skills/dewrite/references/samples"
 find "$OUT/claude" -name '*.bak*' -delete
 
