@@ -2,6 +2,16 @@
 
 윈도우 11 PC에서 쓰는 Claude Code 설정을 그대로 떠 온 것이다(2026-11-12, Claude Code 2.1.322). 저장소 루트는 맥 판이고 `install.sh`는 이 폴더를 건드리지 않는다.
 
+## 맥을 이 세팅으로 맞추기
+
+맥의 Claude Code 세션에 이 한 줄:
+
+```
+claude-config 클론에서 git pull 하고 windows/setup-agent.md 의 M 부분대로 해줘.
+```
+
+새 스킬 셋(`dewrite`, `socratic-tutor`, `writing-for-agents`), 고친 `dev-start`·`dev-end`, 세션 훅, statusline, 설정 키를 맥에 넣는다. 알림 훅과 맥 전용 설정은 그대로 둔다.
+
 ## 새 윈도우 PC에 올리기
 
 Claude Code 첫 세션에 이 한 줄:
@@ -16,7 +26,7 @@ https://github.com/jaefit/claude-config 를 받아서 windows/setup-agent.md 의
 
 ```
 setup.md          사람용 정리
-setup-agent.md    에이전트용 런북 (A 올리기, B 새 PC에 적용)
+setup-agent.md    에이전트용 런북 (A 올리기, B 새 윈도우 PC, M 맥 갱신)
 export.sh         이 폴더를 다시 만드는 스크립트. 올릴 파일 목록이 여기 있다
 claude/           ~/.claude 에 넣을 것: CLAUDE.md, settings, statusline, 훅 2, 스킬 5
 pwsh/             PowerShell 프로필 (claude 래퍼, cc 블록)

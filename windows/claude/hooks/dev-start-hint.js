@@ -115,9 +115,11 @@ try {
   const isHome = path.resolve(cwd).toLowerCase() === path.resolve(os.homedir()).toLowerCase();
   // claude -p(헤드리스)는 CLAUDE_CODE_ENTRYPOINT=sdk-cli. 아침 작업 결과물에 안내 문구가 섞이지 않게 안내를 넣지 않는다 (11-02 실측)
   const headless = process.env.CLAUDE_CODE_ENTRYPOINT === 'sdk-cli';
+  // desk 가 없는 머신(맥 등)에서는 폴더 안내 두 갈래를 건너뛴다. devlog 안내는 그대로 돈다
+  const hasDesk = fs.existsSync(path.join(DESK, 'map.md'));
   if (isTemp || headless) {
     // claude -p 시험이나 루틴 작업 폴더. 안내하지 않는다.
-  } else if (name === 'task' || isHome) {
+  } else if (hasDesk && (name === 'task' || isHome)) {
     out.additionalContext =
       `[폴더 안내] 이 폴더(${isHome ? '홈' : 'Desktop\\task'})에서는 세션을 열지 않는다. 하위 폴더나 Desktop에서 연다 ` +
       `(~/.claude/desk/structure-design.md 2.1). 첫 응답에 이 한 줄을 사용자에게 알릴 것.`;
@@ -145,7 +147,7 @@ try {
         `사용자가 이미 다른 작업을 지시했으면 그 작업을 우선하고 안내는 짧게 덧붙이기만 할 것.` +
         (dueTxt ? `${dueTxt} 이 기한 항목도 안내 줄에 짧게 덧붙일 것.` : '') + cross;
     }
-  } else if (name) {
+  } else if (hasDesk && name) {
     let cross = '';
     try { cross = crossFolderLine(name, null); } catch {}
     out.additionalContext =

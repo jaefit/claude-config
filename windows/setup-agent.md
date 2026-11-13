@@ -2,15 +2,17 @@
 
 Written 2026-11-12 by the hub session on the source PC (Windows 11, user `infomax`, home `C:\Users\infomax`, Claude Code 2.1.322).
 
-Reader: a Claude Code session asked either to **publish** this PC's Claude Code setup (part A, source PC) or to **apply** it on another PC (part B, target PC).
+Reader: a Claude Code session asked to **publish** this PC's Claude Code setup (part A, source PC), to **apply** it on another Windows PC (part B, target PC), to **update a Mac** to it (part M), or to refresh the **private mirror** of `~/.claude` (part C, source PC).
 
-The bundle is the `windows/` folder of `github.com/jaefit/claude-config` (public repository). This file carries order, gates and gotchas. Values live in the bundle files themselves. Inventory, versions and the reason behind each item live in `setup.md` beside this file (Korean, written for the human); read the section a step names.
+Two repositories. The bundle is the `windows/` folder of `github.com/jaefit/claude-config` (public): settings only. The mirror is `github.com/jaefit/claude-home` (private, 2026-11-13): a snapshot of everything `~/.claude/.gitignore` lets through, which is desk files, per-folder memory, every skill, hooks and settings. This file carries order, gates and gotchas. Values live in the bundle files themselves. Inventory, versions and the reason behind each item live in `setup.md` beside this file (Korean, written for the human); read the section a step names.
 
 ## Ground rules
 
 - A step is done when its **Check** passes. Paste the check output into your final report.
-- The repository is public. `windows/export.sh` is the list of what goes into it. `~/.claude` itself stays without a git remote: it also tracks desk work files and per-folder memory, and those stay on the PC.
-- Work content stays out of the bundle: desk topic files, memory, transcripts (`*.jsonl`), `.credentials.json`, key values, tokens, account ids, counterparty and fund names, internal reports.
+- `claude-config` is public. `windows/export.sh` is the list of what goes into it. Work content stays out of it: desk topic files, memory, key values, tokens, account ids, counterparty and fund names, internal reports. Those go to the private mirror only.
+- `~/.claude` itself stays without a git remote. The mirror receives a file snapshot (part C), never the local history.
+- Neither repository receives transcripts (`*.jsonl`) or `.credentials.json`.
+- Before any push, confirm the destination's visibility with `gh repo view <owner/name> --json visibility`. The mirror must print `PRIVATE`.
 - On the target, back up each file you replace as `<name>.bak-<yyyymmdd>` beside it. Fragments backups go outside the `Fragments` folder.
 - Ask the user only for: the three branch facts in B0, logins, git author name and email, and the go-ahead before a push. Decide the rest and note it as your judgment.
 - Reply to the user in Korean.
@@ -36,9 +38,9 @@ Establish and state three facts before touching anything:
 
 - `OS`: Windows, or macOS/Linux.
 - `HOME` and user name, compared with line 3 of this file.
-- `LAYOUT`: `same` when the user keeps projects under `Desktop` and `Desktop\task` and will bring the desk files and memory from the source PC themselves, else `different`.
+- `LAYOUT`: `same` when the user keeps projects under `Desktop` and `Desktop\task` and the logged-in GitHub account can clone the private mirror, else `different`.
 
-On macOS/Linux use the repository root instead of `BUNDLE` (its `SETUP.md` and `install.sh` are the mac path) and take from `BUNDLE` only the skills the root lacks. The bundle's `dev-start-hint.js` and `statusline-command.sh` carry both-platform code, untested on mac since the Windows edits.
+On macOS/Linux stop here and follow part M.
 
 ### B1. Tools
 
@@ -59,15 +61,16 @@ The user performs `claude` login and `gh auth login`. Then you run `gh auth setu
 
 Copy `BUNDLE/claude/*` into `~/.claude/`, then `agents/`, `skills/proofread/` and `skills/review-paper/` from the repository root (identical on both platforms). Where the target already has `settings.json`, merge key by key and keep target keys the bundle lacks.
 
-- The bundle's `CLAUDE.md` loads only the dewrite rules. With `LAYOUT=same`, once the user has placed `desk/` in `~/.claude/`, append `@~/.claude/desk/user.md` and `@~/.claude/desk/rules.md` to it.
+- With `LAYOUT=same`, skip the bundle copy above: clone `https://github.com/jaefit/claude-home.git` to a folder outside `~/.claude` and copy its contents except `.git` into `~/.claude/`. It carries the full `CLAUDE.md`, `settings.json` (with the `remote` key), `desk/`, `projects/*/memory/` and every skill. `settings.local.json` and `hooks/notify.ps1` still come from `BUNDLE/claude/` when the mirror lacks them.
+- The bundle's `CLAUDE.md` loads only the dewrite rules; the mirror's also loads `desk/user.md` and `desk/rules.md`.
 - With `LAYOUT=different` the skills and the session hook still mention `desk/map.md` and `desk/handoff.md` (hub mode, handoff lines). Those branches stay idle without the files.
-- Pinned skills (`socratic-tutor`, `writing-for-agents`) carry local sections: install them from the bundle, never from upstream. `to-questionnaire` is held back from the bundle; the user copies it from the source PC.
+- Pinned skills (`socratic-tutor`, `writing-for-agents`) carry local sections: install them from the bundle or the mirror, never from upstream. `to-questionnaire` is in the mirror only.
 - `permissions.defaultMode` ships as `bypassPermissions` by the user's choice.
 - `/model` writes a `model` key into `settings.json`. The bundle ships without it, so the target starts on the account default.
 
 **Check B3:** `settings.json` parses; every `@` path in `~/.claude/CLAUDE.md` exists; both hook commands in `settings.json` point at existing files.
 
-### B4. Memory slugs (only when the user brought `projects/*/memory/`)
+### B4. Memory slugs (only with `projects/*/memory/` from the mirror)
 
 Claude Code names a project's memory directory from its working directory: every character outside `[A-Za-z0-9]` becomes one `-`, each Hangul character included (`C:\Users\infomax\Desktop\업무` → `C--Users-infomax-Desktop---`). Compute with node, since Git Bash `tr` and `sed` work bytewise and turn one Hangul character into three dashes:
 
@@ -119,11 +122,57 @@ Place `BUNDLE/pwsh/Microsoft.PowerShell_profile.ps1` at `$PROFILE`; where the ta
 
 One table: step, check, result. Then list what remains with the user: connector logins on claude.ai, anything in "Outside this runbook" they want, and each unverified item you hit.
 
+## M. Update a Mac to this setup (run on the Mac)
+
+The Mac already runs the repository root (`install.sh`, `SETUP.md`). On a Mac without it, run the root `SETUP.md` first. This part brings over what changed on the Windows PC since: three new skills, newer `dev-start` and `dev-end`, the session hook, the status line, the dewrite rules and the settings keys. The bundle's hook, status line and both skills carry both-platform code, written on Windows and untested on a Mac until you run the checks below.
+
+M0. Find the clone: `readlink ~/.claude/settings.json` points into it when `install.sh` ran in link mode (`MODE=link`); otherwise ask the user where it is (`MODE=copy`). In link mode the Mac's own setting changes sit in the clone as uncommitted edits: read `git status` and `git diff`, commit them, then `git pull`. `BUNDLE` is `<clone>/windows`.
+
+M1. Place these from `BUNDLE/claude/` into `~/.claude/` at the same relative path, backing up what you replace (Ground rules): `skills/dev-start`, `skills/dev-end`, `skills/dewrite`, `skills/socratic-tutor`, `skills/writing-for-agents`, `hooks/dev-start-hint.js`, `statusline-command.sh`. Link mode: `ln -sfn "$BUNDLE/claude/<path>" ~/.claude/<path>`. Copy mode: `cp -R`.
+
+- Keep the Mac's `hooks/notify.sh`, `hooks/notify.py`, `skills/proofread`, `skills/review-paper` and `agents/`. `notify.ps1`, part B7 and part B8 are Windows only.
+- The skills name `~/.claude/desk/` files and a hub mode keyed to the Windows path `C:\Users\infomax\Desktop`. Without a `desk/` folder those branches stay idle, and the hook skips its folder hints (it checks for `desk/map.md`).
+
+M2. `~/.claude/CLAUDE.md`: add the line `@~/.claude/skills/dewrite/always-on.md` when absent. Leave the user's other lines.
+
+M3. Settings. Merge `BUNDLE/claude/settings.json` into the Mac's `settings.json` (in link mode, the file in the clone root): the bundle wins for every key except `hooks`, the Mac keeps keys the bundle lacks (`model` among them), and `enabledPlugins` and `extraKnownMarketplaces` are unions.
+
+```sh
+jq -s '.[0] as $m | .[1] as $w | $m + ($w | del(.hooks)) + {enabledPlugins: ($m.enabledPlugins + $w.enabledPlugins), extraKnownMarketplaces: ($m.extraKnownMarketplaces + $w.extraKnownMarketplaces)}' settings.json "$BUNDLE/claude/settings.json" > settings.merged.json
+```
+
+Read the diff against the old file, then replace it. Plugins follow part B6.
+
+M4. Test as in B5 with Mac paths in the samples (`"cwd":"/Users/<name>/<project>"`), skipping the Windows notification line. Where a check fails, restore that one file from its backup and report the failure text.
+
+**Check M:** `jq -e . ~/.claude/settings.json` succeeds and `.hooks.Notification` still names `notify.sh`; the status line prints two lines with `(↻HH:MM)` on the second; the session hook exits 0 and prints `sessionTitle` built from the sample `cwd`; `node ~/.claude/skills/dewrite/scripts/gate.js ~/.claude/CLAUDE.md ~/.claude/CLAUDE.md` prints `change rate: 0.0%`; every `@` path in `~/.claude/CLAUDE.md` exists; a new session lists `dewrite`, `socratic-tutor` and `writing-for-agents`.
+
+M5. Report as in B9. In link mode the root `settings.json` now differs in the clone: commit it, and push on the user's word.
+
+Desk files and per-folder memory describe the Windows PC's folders. They come to the Mac only on the user's word, from the private mirror (B3, `LAYOUT=same` line).
+
+## C. Private mirror (source PC)
+
+Run in Git Bash. `MIRROR` is a clone of `https://github.com/jaefit/claude-home.git` in a folder outside `~/.claude`.
+
+```sh
+gh repo view jaefit/claude-home --json visibility -q .visibility   # must print PRIVATE
+cd "$MIRROR" && git config core.autocrlf false && git pull -q
+git rm -rq --ignore-unmatch .
+git -C ~/.claude ls-files -co --exclude-standard -z | tar -C ~/.claude --null -T - -cf - | tar -xf -
+git add -A && git status --short | wc -l
+```
+
+The file list is whatever `~/.claude/.gitignore` lets through, tracked or not; the copied `.gitignore` applies the same rules inside the mirror. Commit with the author identity the mirror's log shows, without attribution lines, and push to `main` on the user's word.
+
+`tar` prints `Cannot stat` for index entries already deleted on disk (`git -C ~/.claude ls-files -d`) and exits non-zero; those files are meant to be absent.
+
+**Check C:** `git ls-files | grep -ciE 'credential|\.jsonl$'` prints `0`; `git ls-files | wc -l` equals `git -C ~/.claude ls-files -co --exclude-standard | wc -l` minus `git -C ~/.claude ls-files -d | wc -l` (558 = 566 − 8 on 2026-11-13); visibility printed `PRIVATE`.
+
 ## Outside this runbook
 
 These stay on the source PC and move only by the user's hand:
 
-- `~/.claude/desk/` topic files, `projects/*/memory/`, `skills/to-questionnaire/`.
 - Windows scheduled tasks and cloud routines (listed in the source PC's `desk/schedule.md`).
 - Excel 2016, Infomax, LSEG Workspace rules (source PC `desk/toolchain.md`, `infomax.md`, `lseg-data.md`).
 

@@ -40,10 +40,10 @@ git 설정:
 
 원본은 `github.com/jaefit/claude-config`(맥 전역 설정)이고 2026-08-04에 이 PC로 옮겼다. `install.sh`가 macOS 전용이라 항목별로 손으로 옮겼다. 새 PC가 윈도우면 저장소 루트(맥 판) 말고 `windows/`에서 가져온다. 윈도우에서 고친 것이 거기에만 있다(아래 「윈도우에서 고친 것」).
 
-`~/.claude` 자체는 로컬 git이고 원격을 붙이지 않는다. desk 업무 파일과 폴더 메모리를 같이 추적하기 때문이다. 저장소에는 `windows/export.sh`가 고른 것만 복사해 올린다.
+`~/.claude` 자체는 로컬 git이고 원격을 붙이지 않는다. 공개 저장소에는 `windows/export.sh`가 고른 것만 복사해 올린다. `~/.claude` 전체(desk, 폴더 메모리, 스킬 전부)는 비공개 저장소 `github.com/jaefit/claude-home`에 파일 스냅샷으로 올린다(2026-11-13 사용자 결정, 절차는 런북 C). 대화 기록과 자격 증명은 어느 쪽에도 올리지 않는다.
 
 - 올리는 것: `CLAUDE.md`(dewrite 줄만), `settings.json`(`remote`, `model` 키 뺌), `settings.local.json`, `statusline-command.sh`, `hooks/dev-start-hint.js`, `hooks/notify.ps1`, 스킬 `dev-start`·`dev-end`·`dewrite`·`socratic-tutor`·`writing-for-agents`, PowerShell 프로필, WT Fragments 파일, 이 문서와 런북.
-- 로컬에만 두는 것: `desk/`의 나머지 파일, `projects/*/memory/`, `skills/dewrite/references/samples/`, `skills/to-questionnaire/`, `skills/synced/`(계정이 준다). 같은 폴더 구조를 쓰는 PC에는 사용자가 따로 옮긴다.
+- 공개 저장소에 안 올리는 것: `desk/`의 나머지 파일, `projects/*/memory/`, `skills/dewrite/references/samples/`, `skills/to-questionnaire/`, `skills/synced/`(계정이 준다). 비공개 `claude-home`에는 다 들어 있다.
 - `agents/`, `skills/proofread`, `skills/review-paper`는 저장소 루트 것과 같아서 `windows/`에 다시 넣지 않았다.
 
 | 경로 | 내용 | 표시 |
@@ -234,7 +234,7 @@ cc 블록의 명령:
 1. 1절 도구를 깔고 폰트를 넣는다. WT `profiles.defaults.font.face`를 맞춘다.
 2. Claude Code를 깔고 로그인한다.
 3. `gh auth login`, `gh auth setup-git`, git 작성자 설정.
-4. `claude-config`를 받아 `windows/claude/`를 `~/.claude`에 넣는다. 같은 폴더 구조를 쓸 PC면 desk 파일과 메모리를 따로 옮기고 전역 `CLAUDE.md`에 `desk/user.md`, `desk/rules.md` 두 줄을 다시 넣는다.
+4. 같은 폴더 구조를 쓸 PC면 비공개 `claude-home`을 받아 `.git`만 빼고 `~/.claude`에 넣는다(desk, 메모리, 스킬, 전역 `CLAUDE.md`가 다 들어 있다). 다른 구조면 `claude-config`를 받아 `windows/claude/`를 넣는다.
 5. 새 세션을 열어 `/plugin`으로 플러그인 열한 개가 깔렸는지 본다.
 6. `Install-PSResource BurntToast, CompletionPredictor`.
 7. 프로필을 복사하고 `$CcLayouts`를 새 PC 폴더에 맞게 고친다.
